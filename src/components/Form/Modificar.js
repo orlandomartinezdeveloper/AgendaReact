@@ -1,11 +1,11 @@
 import React, { useEffect, Fragment, useState } from 'react';
 import ConsultarCSS from '../Form/Consultar.module.css';
 const Modificar = () => {
+    //Listar Contatos
     const [contatos, setContatos] = useState([]);
     useEffect(() => {
         getContatos()
     }, [contatos.length])
-
     const getContatos = () => {
         fetch('http://localhost:3000/contatos',
             {
@@ -17,28 +17,30 @@ const Modificar = () => {
             .then(function (data) {
                 setContatos(data)
             })
-
     }
+    //Modificar Contatos
     const [formA, setFormA] = useState('')
-
     const modificarContact = (id) => {
-        fetch(`http://localhost:3000/contatos/${id}`)
+        fetch(`http://localhost:3000/contatos/${id}`, {
+            method: 'GET'
+        })
             .then(function (response) {
                 return response.json()
             })
             .then(function (data) {
-                setFormA(<div><input type="text" value={data.nome} onChange={(event) => event.target.value} />
-                    <input type="text" value={data.telefone} onChange={(event) => event.target.value} />
-                    <input type="email" value={data.email} onChange={(event) => event.target.value} />
-                    <button type="submit">Atualizar</button>
-                </div >);
+                //Formulario de Modificação
+                setFormA(
+                    <div><input type="text" value={data.nome} onChange={(event) => event.target.value} />
+                        <input type="text" value={data.telefone} onChange={(event) => event.target.value} />
+                        <input type="email" value={data.email} onChange={(event) => event.target.value} />
+                        <button type="submit">Atualizar</button>
+                    </div >);
             })
             .catch(function (error) {
                 console.log(error);
             });
-
     }
-
+    //Resposta na Tela dos Contatos na Base de Dados
     return (
         <Fragment>
             <div className={ConsultarCSS.main}>
@@ -55,11 +57,7 @@ const Modificar = () => {
                 </div>
                 {formA}
             </div>
-
         </Fragment>
-
     )
-
 }
-
 export default Modificar;
