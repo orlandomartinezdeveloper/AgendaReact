@@ -6,6 +6,7 @@ const Modificar = () => {
     useEffect(() => {
         getContatos()
     }, [contatos.length])
+
     const getContatos = () => {
         fetch('http://localhost:3000/contatos',
             {
@@ -22,7 +23,10 @@ const Modificar = () => {
     const [formA, setFormA] = useState('')
     const modificarContact = (id) => {
         fetch(`http://localhost:3000/contatos/${id}`, {
-            method: 'GET'
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
         })
             .then(function (response) {
                 return response.json()
@@ -30,7 +34,7 @@ const Modificar = () => {
             .then(function (data) {
                 //Formulario de Modificação
                 setFormA(
-                    <div><input type="text" value={data.nome} onChange={(event) => event.target.value} />
+                    <div><input type="text" value={data.nome} onChange={(event) => (event.target.value)} />
                         <input type="text" value={data.telefone} onChange={(event) => event.target.value} />
                         <input type="email" value={data.email} onChange={(event) => event.target.value} />
                         <button type="submit">Atualizar</button>
